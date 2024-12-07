@@ -13,12 +13,14 @@ public class Main {
         System.out.println("Type 3 to complete task:");
         System.out.println("Type 4 to delete the task:");
         System.out.println("Type 5 to see all your tasks:");
+        System.out.println("Type 6 to see all your completed tasks:");
+        System.out.println("Type 7 to see all your active tasks:");
 
         int userAction = -1;
-        while (userAction < 0){
-            try{
+        while (userAction < 0) {
+            try {
                 userAction = Integer.parseInt(scanner.nextLine());
-            }catch(NumberFormatException e){
+            } catch (NumberFormatException e) {
                 System.out.println("Invalid number");
                 userAction = -1;
             }
@@ -33,10 +35,10 @@ public class Main {
             case 2:
                 System.out.println("Type the task id:");
                 long id = -1L;
-                while (id < 0){
-                    try{
+                while (id < 0) {
+                    try {
                         id = Long.parseLong(scanner.nextLine());
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("Invalid number");
                         id = -1L;
                     }
@@ -49,10 +51,10 @@ public class Main {
             case 3:
                 System.out.println("Type the task id");
                 long idTaskCompleted = -1L;
-                while (idTaskCompleted < 0){
-                    try{
+                while (idTaskCompleted < 0) {
+                    try {
                         idTaskCompleted = Long.parseLong(scanner.nextLine());
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("Invalid number");
                         idTaskCompleted = -1L;
                     }
@@ -62,10 +64,10 @@ public class Main {
             case 4:
                 System.out.println("Type the id for the task you want to delete:");
                 long idDeleteTask = -1L;
-                while (idDeleteTask < 0){
-                    try{
+                while (idDeleteTask < 0) {
+                    try {
                         idDeleteTask = Long.parseLong(scanner.nextLine());
-                    }catch(NumberFormatException e){
+                    } catch (NumberFormatException e) {
                         System.out.println("Invalid number");
                         idDeleteTask = -1L;
                     }
@@ -74,13 +76,34 @@ public class Main {
                 break;
             case 5:
                 var tasksArrayList = tasksService.getAll();
-                if(tasksArrayList.isEmpty()){
-                    System.out.println("You don't have any tasks");
-                }
-                for(var task : tasksArrayList){
+                for (var task : tasksArrayList) {
                     System.out.println("Task ID: " + task.getId());
                     System.out.println("Task: " + task.getDescription());
-                    System.out.println("Task status: " + (task.isCompleted() ? "Completed" : "Not completed"));
+                    System.out.println("Task status: " + task.getStatus());
+                    System.out.println("--------------------------");
+                }
+                break;
+            case 6:
+                var tasksArrayListIsCompleted = tasksService.getByStatus(Status.COMPLETED);
+                if (tasksArrayListIsCompleted.isEmpty()) {
+                    System.out.println(("You don't have any tasks"));
+                }
+                for (var task : tasksArrayListIsCompleted) {
+                    System.out.println("Task ID: " + task.getId());
+                    System.out.println("Task: " + task.getDescription());
+                    System.out.println("Task status: Completed");
+                    System.out.println("--------------------------");
+                }
+                break;
+            case 7:
+                var tasksArrayListActive = tasksService.getByStatus(Status.ACTIVE);
+                if (tasksArrayListActive.isEmpty()) {
+                    System.out.println(("You don't have any tasks"));
+                }
+                for (var task : tasksArrayListActive) {
+                    System.out.println("Task ID: " + task.getId());
+                    System.out.println("Task: " + task.getDescription());
+                    System.out.println("Task status: Active");
                     System.out.println("--------------------------");
                 }
                 break;

@@ -35,11 +35,11 @@ public class TasksService {
             System.out.println("Task not found");
             return;
         }
-        if(task.isCompleted()){
+        if(task.getStatus().equals(Status.COMPLETED)){
             System.out.println("Task is already completed");
             return;
         }
-        task.setCompleted(true);
+        task.setStatus(Status.COMPLETED);
         long millis = System.currentTimeMillis();
         task.setCompletedAt(new Date(millis));
         taskRepository.update(task);
@@ -47,12 +47,21 @@ public class TasksService {
     public void deleteById(Long id){
         var task = taskRepository.getById(id);
         if (task == null) {
-            System.out.println("Task not found");
+            System.out.println("Task doesn't exist");
             return;
         }
-        taskRepository.delete(id);
+        task.setStatus(Status.INACTIVE);
+        taskRepository.update(task);
     }
     public ArrayList<Tasks> getAll(){
         return taskRepository.getAll();
+    }
+
+    public ArrayList<Tasks> getByStatus(Status status){
+        return taskRepository.getByStatus(status);
+    }
+
+    public ArrayList<Tasks> getByDescription(String description){
+        return taskRepository.getByDescription(description);
     }
 }

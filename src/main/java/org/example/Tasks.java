@@ -4,7 +4,7 @@ import java.util.Date;
 public class Tasks {
     private long id;
     private String description;
-    private boolean isCompleted;
+    private Status status;
     private Date createdAt;
     private Date completedAt;
 
@@ -28,12 +28,12 @@ public class Tasks {
         this.description = description;
     }
 
-    public boolean isCompleted() {
-        return isCompleted;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setCompleted(boolean completed) {
-        isCompleted = completed;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Date getCreatedAt() {
