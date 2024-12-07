@@ -16,6 +16,7 @@ public class Main {
         System.out.println("Type 6 to see all your completed tasks:");
         System.out.println("Type 7 to see all your active tasks:");
         System.out.println("Type 8 to search task by word:");
+        System.out.println("Type 9 to start a task:");
 
         int userAction = -1;
         while (userAction < 0) {
@@ -81,6 +82,9 @@ public class Main {
                     System.out.println("Task ID: " + task.getId());
                     System.out.println("Task: " + task.getDescription());
                     System.out.println("Task status: " + task.getStatus());
+                    System.out.println("Task creation date: " + task.getCreatedAt());
+                    System.out.println("Task start date: " + (task.getStartedAt() == null ? "not started" : task.getStartedAt()));
+                    System.out.println("Task completion date: " + (task.getCompletedAt() == null ? "not completed" : task.getCompletedAt()));
                     System.out.println("--------------------------");
                 }
                 break;
@@ -113,7 +117,8 @@ public class Main {
                 String userTypedTaskDescription = "";
                 while (userTypedTaskDescription.isBlank()) {
                     userTypedTaskDescription = scanner.nextLine();
-                    if (userTypedTaskDescription.isBlank()) System.out.println("Invalid task description\nType an valid task");
+                    if (userTypedTaskDescription.isBlank())
+                        System.out.println("Invalid task description\nType an valid task");
                 }
 
                 var tasksArrayListFound = tasksService.getByDescription(userTypedTaskDescription);
@@ -126,6 +131,19 @@ public class Main {
                     System.out.println("Task status: " + task.getStatus());
                     System.out.println("--------------------------");
                 }
+                break;
+            case 9:
+                System.out.println("Type the task you want to start:");
+                long idTaskStarted = -1L;
+                while (idTaskStarted < 0) {
+                    try {
+                        idTaskStarted = Long.parseLong(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number");
+                        idTaskStarted = -1L;
+                    }
+                }
+                tasksService.startTask(idTaskStarted);
                 break;
         }
     }

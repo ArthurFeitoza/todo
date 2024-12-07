@@ -6,6 +6,7 @@ public class Tasks {
     private String description;
     private Status status;
     private Date createdAt;
+    private Date startedAt;
     private Date completedAt;
 
     public Tasks(String description) {
@@ -42,6 +43,14 @@ public class Tasks {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Date getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(Date startedAt) {
+        this.startedAt = startedAt;
     }
 
     public Date getCompletedAt() {

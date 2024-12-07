@@ -1,4 +1,5 @@
 package org.example;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -9,15 +10,16 @@ public class TasksService {
         this.taskRepository = new TaskRepository();
     }
 
-    public void create(Tasks task){
-        if(task == null || task.getDescription() == null || task.getDescription().isBlank()){
+    public void create(Tasks task) {
+        if (task == null || task.getDescription() == null || task.getDescription().isBlank()) {
             System.out.println("Can't make a task with an empty description");
             return;
         }
         this.taskRepository.create(task);
     }
-    public void updateDescription(Long id, String newDescription){
-        if(newDescription == null || newDescription.isBlank()){
+
+    public void updateDescription(Long id, String newDescription) {
+        if (newDescription == null || newDescription.isBlank()) {
             System.out.println("Can't make a task with an empty description");
             return;
         }
@@ -29,13 +31,14 @@ public class TasksService {
         task.setDescription(newDescription);
         taskRepository.update(task);
     }
-    public void markTaskCompleted(Long id){
+
+    public void markTaskCompleted(Long id) {
         var task = taskRepository.getById(id);
         if (task == null) {
             System.out.println("Task not found");
             return;
         }
-        if(task.getStatus().equals(Status.COMPLETED)){
+        if (task.getStatus().equals(Status.COMPLETED)) {
             System.out.println("Task is already completed");
             return;
         }
@@ -44,7 +47,8 @@ public class TasksService {
         task.setCompletedAt(new Date(millis));
         taskRepository.update(task);
     }
-    public void deleteById(Long id){
+
+    public void deleteById(Long id) {
         var task = taskRepository.getById(id);
         if (task == null) {
             System.out.println("Task doesn't exist");
@@ -53,15 +57,33 @@ public class TasksService {
         task.setStatus(Status.INACTIVE);
         taskRepository.update(task);
     }
-    public ArrayList<Tasks> getAll(){
+
+    public ArrayList<Tasks> getAll() {
         return taskRepository.getAll();
     }
 
-    public ArrayList<Tasks> getByStatus(Status status){
+    public ArrayList<Tasks> getByStatus(Status status) {
         return taskRepository.getByStatus(status);
     }
 
-    public ArrayList<Tasks> getByDescription(String description){
+    public ArrayList<Tasks> getByDescription(String description) {
         return taskRepository.getByDescription(description);
     }
+
+    public void startTask(Long id) {
+        var task = taskRepository.getById(id);
+        if (task == null) {
+            System.out.println("Task not found");
+            return;
+        }
+        if (task.getStatus().equals(Status.STARTED)) {
+            System.out.println("Task already started");
+            return;
+        }
+        task.setStatus(Status.STARTED);
+        long millis = System.currentTimeMillis();
+        task.setStartedAt(new Date(millis));
+        taskRepository.update(task);
+    }
+
 }

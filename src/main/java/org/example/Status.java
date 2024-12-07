@@ -1,7 +1,7 @@
 package org.example;
 
 public enum Status {
-    ACTIVE("A"), INACTIVE("I"), COMPLETED("C");
+    ACTIVE("A"), INACTIVE("I"), COMPLETED("C"), STARTED("S");
 
     private String value;
 

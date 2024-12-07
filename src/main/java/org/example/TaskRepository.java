@@ -25,7 +25,7 @@ public class TaskRepository {
     public void update(Tasks task) {
         try {
             var con = ConnectionFactory.createConnection();
-            String sql = "UPDATE tasks SET description = ?, status = ?, completed_at = ? WHERE id = ?";
+            String sql = "UPDATE tasks SET description = ?, status = ?, completed_at = ?, started_at = ? WHERE id = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, task.getDescription());
             ps.setString(2, task.getStatus().getValue());
@@ -34,7 +34,12 @@ public class TaskRepository {
             } else {
                 ps.setTimestamp(3,new java.sql.Timestamp(task.getCompletedAt().getTime()));
             }
-            ps.setLong(4, task.getId());
+            if (task.getStartedAt() == null) {
+                ps.setNull(4, Types.DATE);
+            } else {
+                ps.setTimestamp(4,new java.sql.Timestamp(task.getStartedAt().getTime()));
+            }
+            ps.setLong(5, task.getId());
             ps.execute();
             con.close();
         } catch (SQLException | ClassNotFoundException e) {
@@ -81,6 +86,7 @@ public class TaskRepository {
                 task.setStatus(Status.getEnum(resultSet.getString("status")));
                 task.setCompletedAt(resultSet.getDate("completed_at"));
                 task.setCreatedAt(resultSet.getDate("created_at"));
+                task.setStartedAt(resultSet.getDate("started_at"));
                 tasks.add(task);
             }
             con.close();
