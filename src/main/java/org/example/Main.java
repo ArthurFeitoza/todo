@@ -17,6 +17,7 @@ public class Main {
         System.out.println("Type 7 to see all your active tasks:");
         System.out.println("Type 8 to search task by word:");
         System.out.println("Type 9 to start a task:");
+        System.out.println("Type 10 to see task duration:");
 
         int userAction = -1;
         while (userAction < 0) {
@@ -144,6 +145,29 @@ public class Main {
                     }
                 }
                 tasksService.startTask(idTaskStarted);
+                break;
+            case 10:
+                System.out.println("Type the task id");
+                long idTask = -1L;
+                while (idTask < 0) {
+                    try {
+                        idTask = Long.parseLong(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number");
+                        idTask = -1L;
+                    }
+                }
+                var task = tasksService.getById(idTask);
+                if(task.getStartedAt() == null || task.getCompletedAt() == null){
+                    System.out.println("Task not started or not completed");
+                    return;
+                }
+
+                System.out.println("Task ID: " + task.getId());
+                System.out.println("Task: " + task.getDescription());
+                System.out.println("Task status: " + task.getStatus());
+                System.out.println("Task duration: " + ((task.getCompletedAt().getTime() - task.getStartedAt().getTime()) / 1000 / 60) + " minutes");
+                System.out.println("--------------------------");
                 break;
         }
     }

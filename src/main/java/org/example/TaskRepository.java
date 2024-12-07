@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TaskRepository {
 
@@ -51,7 +52,7 @@ public class TaskRepository {
     public Tasks getById(long id) {
         try {
             var con = ConnectionFactory.createConnection();
-            String sql = "SELECT * FROM tasks WHERE id = ?";
+            String sql = "SELECT * FROM tasks WHERE id = ? AND status <> 'I'";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setLong(1, id);
             var resultSet = ps.executeQuery();
@@ -59,8 +60,9 @@ public class TaskRepository {
                 var task = new Tasks(resultSet.getString("description"));
                 task.setId(resultSet.getLong("id"));
                 task.setStatus(Status.getEnum(resultSet.getString("status")));
-                task.setCompletedAt(resultSet.getDate("completed_at"));
+                task.setCompletedAt(new Date(resultSet.getTimestamp("completed_at").getTime()));
                 task.setCreatedAt(resultSet.getDate("created_at"));
+                task.setStartedAt(new Date(resultSet.getTimestamp("started_at").getTime()));
                 con.close();
                 return task;
             }
@@ -75,7 +77,7 @@ public class TaskRepository {
     public ArrayList<Tasks> getAll() {
         try {
             var con = ConnectionFactory.createConnection();
-            String sql = "SELECT * FROM tasks";
+            String sql = "SELECT * FROM tasks WHERE status <> 'I'";
             PreparedStatement ps = con.prepareStatement(sql);
             var resultSet = ps.executeQuery();
             ArrayList<Tasks> tasks = new ArrayList<>();

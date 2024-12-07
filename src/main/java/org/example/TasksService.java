@@ -42,6 +42,10 @@ public class TasksService {
             System.out.println("Task is already completed");
             return;
         }
+        if (!task.getStatus().equals(Status.STARTED)) {
+            System.out.println("Task is already completed");
+            return;
+        }
         task.setStatus(Status.COMPLETED);
         long millis = System.currentTimeMillis();
         task.setCompletedAt(new Date(millis));
@@ -62,6 +66,10 @@ public class TasksService {
         return taskRepository.getAll();
     }
 
+    public Tasks getById(long id) {
+        return taskRepository.getById(id);
+    }
+
     public ArrayList<Tasks> getByStatus(Status status) {
         return taskRepository.getByStatus(status);
     }
@@ -80,10 +88,14 @@ public class TasksService {
             System.out.println("Task already started");
             return;
         }
+        if (task.getStatus().equals(Status.COMPLETED)) {
+            System.out.println("Cant start a completed task");
+            return;
+        }
+
         task.setStatus(Status.STARTED);
         long millis = System.currentTimeMillis();
         task.setStartedAt(new Date(millis));
         taskRepository.update(task);
     }
-
 }
