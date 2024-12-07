@@ -93,9 +93,10 @@ public class TaskRepository {
     public ArrayList<Tasks> getByDescription(String description) {
         try {
             var con = ConnectionFactory.createConnection();
-            String sql = "SELECT * FROM tasks WHERE description ilike '%?%'";
+            String sql = "SELECT * FROM tasks WHERE description like ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1,description);
+            ps.setString(1,"%" + description + "%");
+
             var resultSet = ps.executeQuery();
             ArrayList<Tasks> tasks = new ArrayList<>();
 
