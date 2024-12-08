@@ -28,6 +28,8 @@ docker run --name todolist-postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWO
 
 After starting the container, the application will be configured to connect to the database using the following parameters that you can find in the ConnectionFactory class
 
+run the migrations.sql script on the postgreSQL database to create the todo table
+
 ## Project Setup
 
 1. Clone this repository:
